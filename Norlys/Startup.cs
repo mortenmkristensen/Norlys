@@ -26,6 +26,8 @@ public class Startup
         //Services
         services.AddScoped<IPeopleService, PeopleService>();
         services.AddScoped<IOfficeLocationService, OfficeLocationService>();
+        services.AddScoped<PersonValidator>();
+
 
         // Add Swagger
         services.AddSwaggerGen(c => {

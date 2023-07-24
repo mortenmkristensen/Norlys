@@ -11,16 +11,18 @@ namespace Norlys.Controllers
     public class PeopleController : ControllerBase
     {
         private readonly IPeopleService _peopleService;
+        private readonly PersonValidator _personValidator;
 
-        public PeopleController(IPeopleService peopleService) 
+        public PeopleController(IPeopleService peopleService, PersonValidator personValidator) 
         {
             _peopleService = peopleService;
+            _personValidator = personValidator;
         }
 
         // GET: api/<PeopleController>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Person>>> Get() 
-        {
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<IEnumerable<Person>>> Get() {
             var people = await _peopleService.GetAllPeople();
             if (!people.Any()) 
             {
@@ -44,21 +46,30 @@ namespace Norlys.Controllers
         // POST api/<PeopleController>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Post([FromBody] Person person) 
         {
             await _peopleService.CreatePerson(person);
+            if (!await _personValidator.Validate(person)) {
+                return BadRequest("Person invalid. Remove whitespaces from LastName, make sure birthdate is valid or make sure MaxOccupancy for OfficeLocation is not reached");
+            }
             return CreatedAtAction(nameof(Get), new { id = person.PersonID }, person);
         }
 
         // PUT api/<PeopleController>/5
-        [HttpPut("{id}")]
+        [HttpPut()]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Put(int id, [FromBody] Person person) 
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Put([FromBody] Person person) 
         {
-            var existingPerson = await _peopleService.GetPersonByID(id);
+            var existingPerson = await _peopleService.GetPersonByID(person.PersonID);
             if (existingPerson == null) {
                 return NotFound();
+            }
+            if (!await _personValidator.Validate(person)) 
+            {
+                return BadRequest("Person invalid. Remove whitespaces from LastName, make sure birthdate is valid or make sure MaxOccupancy for OfficeLocation is not reached");
             }
 
             await _peopleService.UpdatePerson(person);

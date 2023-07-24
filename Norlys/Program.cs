@@ -1,32 +1,16 @@
-using Norlys.Repositories;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
-var builder = WebApplication.CreateBuilder(args);
+public class Program {
+    public static void Main(string[] args) 
+    {
+        CreateHostBuilder(args).Build().Run();
+    }
 
-// Add services to the container.
-
-builder.Services.AddControllers();
-builder.Services.AddScoped<IOfficeLocationRepository, OfficeLocationRepository>();
-builder.Services.AddScoped<IOfficeLocationRepository, OfficeLocationRepository>();
-builder.Services.AddScoped<IPersonRepository, PersonRepository>();
-
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    public static IHostBuilder CreateHostBuilder(string[] args) =>
+        Host.CreateDefaultBuilder(args)
+            .ConfigureWebHostDefaults(webBuilder => 
+            {
+                webBuilder.UseStartup<Startup>(); // Use the Startup class to configure the application.
+            });
 }
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();

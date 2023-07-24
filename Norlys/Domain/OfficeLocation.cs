@@ -2,7 +2,7 @@
 {
     public class OfficeLocation
     {
-        public int? OfficeID { get; set; }
+        public int OfficeID { get; set; }
         public string LocationName { get; set; }
         public int MaxOccupancy { get; set; }
         public List<Person>? People { get; set; }

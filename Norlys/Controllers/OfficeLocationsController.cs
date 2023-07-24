@@ -16,60 +16,55 @@ namespace Norlys.Controllers
         {
             _officeLocationService = officeLocationService;
         }
-        // GET: api/<OfficeLocationsController>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<OfficeLocation>>> Get() 
+        public async Task<ActionResult<IEnumerable<OfficeLocation>>> Get(CancellationToken cancellationToken) 
         {
-            var officeLocations = await _officeLocationService.GetAllOfficeLocations();
+            var officeLocations = await _officeLocationService.GetAllOfficeLocations(cancellationToken);
             return Ok(officeLocations);
         }
 
-        // GET api/<OfficeLocationsController>/5
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<OfficeLocation>> Get(int id) 
+        public async Task<ActionResult<OfficeLocation>> Get(int id, CancellationToken cancellationToken) 
         {
-            var officeLocation = await _officeLocationService.GetOfficeLocationByID(id);
+            var officeLocation = await _officeLocationService.GetOfficeLocationByID(id, cancellationToken);
             if (officeLocation == null) {
                 return NotFound();
             }
             return Ok(officeLocation);
         }
 
-        // POST api/<OfficeLocationsController>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<IActionResult> Post([FromBody] OfficeLocation officeLocation) 
+        public async Task<IActionResult> Post([FromBody] OfficeLocation officeLocation, CancellationToken cancellationToken) 
         {
-            await _officeLocationService.CreateOfficeLocation(officeLocation);
+            await _officeLocationService.CreateOfficeLocation(officeLocation, cancellationToken);
             return CreatedAtAction(nameof(Get), new { id = officeLocation.OfficeID }, officeLocation);
         }
 
-        // PUT api/<OfficeLocationsController>/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] OfficeLocation officeLocation) 
+        [HttpPut()]
+        public async Task<IActionResult> Put([FromBody] OfficeLocation officeLocation, CancellationToken cancellationToken) 
         {
-            var existingOfficeLocation = await _officeLocationService.GetOfficeLocationByID(id);
+            var existingOfficeLocation = await _officeLocationService.GetOfficeLocationByID(officeLocation.OfficeID, cancellationToken);
             if (existingOfficeLocation == null) {
                 return NotFound();
             }
 
-            await _officeLocationService.UpdateOfficeLocation(officeLocation);
+            await _officeLocationService.UpdateOfficeLocation(officeLocation, cancellationToken);
             return NoContent();
         }
 
-        // DELETE api/<OfficeLocationsController>/5
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Delete(int id) 
+        public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken) 
         {
-            var existingOfficeLocation = await _officeLocationService.GetOfficeLocationByID(id);
+            var existingOfficeLocation = await _officeLocationService.GetOfficeLocationByID(id, cancellationToken);
             if (existingOfficeLocation == null) {
                 return NotFound();
             }
 
-            await _officeLocationService.DeleteOfficeLocation(id);
+            await _officeLocationService.DeleteOfficeLocation(id, cancellationToken);
             return NoContent();
         }
     }

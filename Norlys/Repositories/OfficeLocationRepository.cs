@@ -10,7 +10,7 @@ namespace Norlys.Repositories
         public OfficeLocationRepository(string connectionString) {
             this.connectionString = connectionString;
         }
-        public async Task<int> CreateOfficeLocation(OfficeLocation officeLocation) {
+        public async Task<int> CreateOfficeLocation(OfficeLocation officeLocation, CancellationToken cancellationToken) {
             int id = 0;
             string insertSql = "INSERT INTO OfficeLocations (LocationName, MaxOccupancy) " +
                                 "VALUES (@LocationName, @MaxOccupancy)";
@@ -26,7 +26,7 @@ namespace Norlys.Repositories
             }
             return id;
         }
-        public async Task<List<OfficeLocation>> GetAllOfficeLocations() {
+        public async Task<List<OfficeLocation>> GetAllOfficeLocations(CancellationToken cancellationToken) {
             List<OfficeLocation> officeLocations = new List<OfficeLocation>();
 
             string selectSql = "SELECT OfficeID, LocationName, MaxOccupancy FROM OfficeLocations";
@@ -52,7 +52,7 @@ namespace Norlys.Repositories
 
             return officeLocations;
         }
-        public async Task<OfficeLocation> GetOfficeLocationWithPeople(int officeID) {
+        public async Task<OfficeLocation> GetOfficeLocationWithPeople(int officeID, CancellationToken cancellationToken) {
             OfficeLocation officeLocation = null;
 
             string selectSql = "SELECT OfficeID, LocationName, MaxOccupancy FROM OfficeLocations WHERE OfficeID = @OfficeID";
@@ -78,7 +78,7 @@ namespace Norlys.Repositories
             return officeLocation;
         }
 
-        public async Task UpdateOfficeLocation(OfficeLocation officeLocation) {
+        public async Task UpdateOfficeLocation(OfficeLocation officeLocation, CancellationToken cancellationToken) {
             string updateSql = "UPDATE OfficeLocations SET LocationName = @LocationName, MaxOccupancy = @MaxOccupancy " +
                                "WHERE OfficeID = @OfficeID";
 
@@ -93,7 +93,7 @@ namespace Norlys.Repositories
                 }
             }
         }
-        public async Task DeleteOfficeLocation(int officeLocationID) {
+        public async Task DeleteOfficeLocation(int officeLocationID, CancellationToken cancellationToken) {
             string deleteSql = "DELETE FROM OfficeLocations WHERE OfficeID = @OfficeID";
 
             using (SqlConnection connection = new SqlConnection(connectionString)) {

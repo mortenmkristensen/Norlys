@@ -10,24 +10,24 @@ namespace Norlys.Services
             _peopleRepository = peopleRepository;
         }
 
-        public async Task CreatePerson(Person person) {
-            await _peopleRepository.CreatePerson(person);
+        public async Task CreatePerson(Person person, CancellationToken cancellationToken) {
+            await _peopleRepository.CreatePerson(person, cancellationToken);
         }
 
-        public async Task<Person> GetPersonByID(int personID) {
-            return await _peopleRepository.GetPersonByID(personID);
+        public async Task<Person> GetPersonByID(int personID, CancellationToken cancellationToken) {
+            return await _peopleRepository.GetPersonByID(personID, cancellationToken);
         }
 
-        public async Task UpdatePerson(Person person) {
-            await _peopleRepository.UpdatePerson(person);
+        public async Task UpdatePerson(Person person, CancellationToken cancellationToken) {
+            await _peopleRepository.UpdatePerson(person, cancellationToken);
         }
 
-        public async Task DeletePerson(int personID) {
-            await _peopleRepository.DeletePerson(personID);
+        public async Task DeletePerson(int personID, CancellationToken cancellationToken) {
+            await _peopleRepository.DeletePerson(personID, cancellationToken);
         }
 
-        public async Task<List<Person>> GetAllPeople() {
-            return await _peopleRepository.GetAllPeople();
+        public async Task<List<Person>> GetAllPeople(CancellationToken cancellationToken) {
+            return await _peopleRepository.GetAllPeople(cancellationToken);
         }
     }
 }

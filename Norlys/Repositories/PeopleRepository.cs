@@ -10,7 +10,7 @@ namespace Norlys.Repositories
             this.connectionString = connectionString;
         }
 
-        public async Task CreatePerson(Person person) {
+        public async Task CreatePerson(Person person, CancellationToken cancellationToken) {
             string insertSql = "INSERT INTO People (FirstName, LastName, BirthDate, OfficeID) " +
                               "VALUES (@FirstName, @LastName, @BirthDate, @OfficeID)";
 
@@ -27,7 +27,7 @@ namespace Norlys.Repositories
             }
         }
 
-        public async Task<Person> GetPersonByID(int personID) {
+        public async Task<Person> GetPersonByID(int personID, CancellationToken cancellationToken) {
             Person person = null;
 
             string selectSql = "SELECT PersonID, FirstName, LastName, BirthDate, OfficeID " +
@@ -55,7 +55,7 @@ namespace Norlys.Repositories
             return person;
         }
 
-        public async Task UpdatePerson(Person person) {
+        public async Task UpdatePerson(Person person, CancellationToken cancellationToken) {
             string updateSql = "UPDATE People SET FirstName = @FirstName, LastName = @LastName, " +
                                "BirthDate = @BirthDate, OfficeID = @OfficeID " +
                                "WHERE PersonID = @PersonID";
@@ -74,7 +74,7 @@ namespace Norlys.Repositories
             }
         }
 
-        public async Task DeletePerson(int personID) {
+        public async Task DeletePerson(int personID, CancellationToken cancellationToken) {
             string deleteSql = "DELETE FROM People WHERE PersonID = @PersonID";
 
             using (SqlConnection connection = new SqlConnection(connectionString)) {
@@ -86,7 +86,7 @@ namespace Norlys.Repositories
                 }
             }
         }
-        public async Task<List<Person>> GetAllPeople() {
+        public async Task<List<Person>> GetAllPeople(CancellationToken cancellationToken) {
             List<Person> people = new List<Person>();
 
             string selectSql = "SELECT PersonID, FirstName, LastName, BirthDate, OfficeID FROM People";

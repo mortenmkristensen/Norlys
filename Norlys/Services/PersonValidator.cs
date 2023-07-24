@@ -9,9 +9,9 @@ namespace Norlys.Services {
         {
             _officeLocationService = officeLocationService;
         }
-        public async Task<bool> Validate(Person person) 
+        public async Task<bool> Validate(Person person, CancellationToken cancellationToken) 
         {
-            var officeLocation = await _officeLocationService.GetOfficeLocationByID(person.OfficeID);
+            var officeLocation = await _officeLocationService.GetOfficeLocationByID(person.OfficeID, cancellationToken);
             if (officeLocation?.People?.Count >= officeLocation?.MaxOccupancy) 
             {
                 return false;

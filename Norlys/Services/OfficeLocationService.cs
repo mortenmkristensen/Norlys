@@ -10,24 +10,24 @@ namespace Norlys.Services
             this._officeLocationRepository = officeLocationRepository;
         }
 
-        public async Task CreateOfficeLocation(OfficeLocation officeLocation) {
-            await _officeLocationRepository.CreateOfficeLocation(officeLocation);
+        public async Task CreateOfficeLocation(OfficeLocation officeLocation, CancellationToken cancellationToken) {
+            await _officeLocationRepository.CreateOfficeLocation(officeLocation, cancellationToken);
         }
 
-        public async Task<OfficeLocation> GetOfficeLocationByID(int officeLocationID) {
-            return await _officeLocationRepository.GetOfficeLocationWithPeople(officeLocationID);
+        public async Task<OfficeLocation> GetOfficeLocationByID(int officeLocationID, CancellationToken cancellationToken) {
+            return await _officeLocationRepository.GetOfficeLocationWithPeople(officeLocationID, cancellationToken);
         }
 
-        public async Task UpdateOfficeLocation(OfficeLocation officeLocation) {
-            await _officeLocationRepository.UpdateOfficeLocation(officeLocation);
+        public async Task UpdateOfficeLocation(OfficeLocation officeLocation, CancellationToken cancellationToken) {
+            await _officeLocationRepository.UpdateOfficeLocation(officeLocation, cancellationToken);
         }
 
-        public async Task DeleteOfficeLocation(int officeLocationID) {
-            await _officeLocationRepository.DeleteOfficeLocation(officeLocationID);
+        public async Task DeleteOfficeLocation(int officeLocationID, CancellationToken cancellationToken) {
+            await _officeLocationRepository.DeleteOfficeLocation(officeLocationID, cancellationToken);
         }
 
-        public async Task<List<OfficeLocation>> GetAllOfficeLocations() {
-            return await _officeLocationRepository.GetAllOfficeLocations();
+        public async Task<List<OfficeLocation>> GetAllOfficeLocations(CancellationToken cancellationToken) {
+            return await _officeLocationRepository.GetAllOfficeLocations(cancellationToken);
         }
     }
 }
